@@ -1,18 +1,17 @@
 var temp = '';
 
-function toCelsius(fahrenheit) {
-  return Math.floor(0.55 * (fahrenheit - 32));
+function toCelsius(kelvin) {
+  return (kelvin-273);
 }
 
-function toFahrenheit(celsius) {
-  return Math.floor((celsius * 1.8) + 32);
+function toFahrenheit(kelvin) {
+  return (((kelvin-273) * 1.8) + 32);
 }
 
 function fetchWeather() {
   $.getJSON('http://ipinfo.io', function(data) {
-    var userZip = data.postal;
-    $('#myZip').html(userZip);
-    $.getJSON('http://api.openweathermap.org/data/2.5/weather?zip=' + userZip + '&units=imperial&APPID=1d85bfdf5c6a1fbb8f41feeec23eee84&&callback=?', function(info) {
+    var userCity = data.city;
+    $.getJSON('http://api.openweathermap.org/data/2.5/weather?q=' + userCity + '&APPID=1d85bfdf5c6a1fbb8f41feeec23eee84&&callback=?', function(info) {
       $('#userLoc').html(info.name + ", " + info.sys.country);
       var weatherDesc = info.weather[0].main;
       if (weatherDesc === 'Clouds') {
@@ -33,18 +32,16 @@ function fetchWeather() {
       else if (weatherDesc === 'Clear sky') {
         $("body").css('background-image', 'url("https://pixabay.com/static/uploads/photo/2014/10/03/16/53/refreshing-471950_960_720.jpg")');
       }
-
       temp = Math.floor(info.main.temp);
       if (info.sys.country !== 'US') {
-        temp = toCelsius(temp);
         $('#changeTemp').append('Fahrenheit');
         $('#tempLetter').append('C°');
+        $('#temperature').html(toCelsius(temp));
       } else {
         $('#changeTemp').append('Celsius');
         $('#tempLetter').append('F°');
-        $('#temperature').html(temp);
+        $('#temperature').html(toFahrenheit(temp));
       }
-      temp = $('#temperature').html(temp).text();
     });
   })
 }
@@ -53,7 +50,7 @@ $(document).ready(function() {
   fetchWeather();
   $("#changeTemp").on('click', function() {
     if ($(this).text() == 'Fahrenheit') {
-      $('#temperature').html(temp);
+      $('#temperature').html(toFahrenheit(temp));
       $(this).text('Celsius');
       $('#tempLetter').text('F°');
     } else if ($(this).text() == 'Celsius') {
