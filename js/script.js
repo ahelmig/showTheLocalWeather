@@ -5,7 +5,7 @@ function toCelsius(kelvin) {
 }
 
 function toFahrenheit(kelvin) {
-  return (((kelvin-273) * 1.8) + 32);
+  return Math.floor((((kelvin-273) * 1.8) + 32));
 }
 
 function fetchWeather() {
