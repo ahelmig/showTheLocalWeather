@@ -29,7 +29,7 @@ function fetchWeather() {
       if (weatherDesc === 'Thunderstorm') {
         $("body").css('background-image', 'url("https://pixabay.com/static/uploads/photo/2014/06/26/22/02/lightning-378069_960_720.jpg")');
       }
-      else if (weatherDesc === 'Clear sky') {
+      else if (weatherDesc === 'Clear') {
         $("body").css('background-image', 'url("https://pixabay.com/static/uploads/photo/2014/10/03/16/53/refreshing-471950_960_720.jpg")');
       }
       temp = Math.floor(info.main.temp);
